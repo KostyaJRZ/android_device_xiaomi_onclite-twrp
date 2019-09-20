@@ -1,6 +1,6 @@
 LOCAL_PATH := $(call my-dir)
 
-ifneq ($(filter onc,onclite,$(TARGET_DEVICE)),)
+ifeq ($(TARGET_DEVICE),onc)
 include $(call all-makefiles-under,$(LOCAL_PATH))
 include $(CLEAR_VARS)
 endif
