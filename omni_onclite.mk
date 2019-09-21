@@ -17,4 +17,4 @@ PRODUCT_PROPERTY_OVERRIDES += \
     sys.usb.rndis.func.name=rndis_bam \
     sys.usb.rmnet.func.name=rmnet_bam
 
-PRODUCT_BUILD_PROP_OVERRIDES += TARGET_DEVICE=onclite PRODUCT_NAME=onclite
+PRODUCT_BUILD_PROP_OVERRIDES += TARGET_DEVICE=onc PRODUCT_NAME=onclite
