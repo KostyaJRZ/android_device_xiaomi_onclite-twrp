@@ -98,8 +98,8 @@ BOARD_HAS_NO_SELECT_BUTTON := true
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 
 # Decrypt /data
-TARGET_HW_DISK_ENCRYPTION := true
-TARGET_CRYPTFS_HW_PATH := vendor/qcom/opensource/commonsys/cryptfs_hw
+#TARGET_HW_DISK_ENCRYPTION := true
+#TARGET_CRYPTFS_HW_PATH := vendor/qcom/opensource/commonsys/cryptfs_hw
 
 # Crypto
 TW_INCLUDE_CRYPTO := true
@@ -126,11 +126,10 @@ TW_EXCLUDE_TWRPAPP := true
 PLATFORM_SECURITY_PATCH := 2099-12-31
 
 # Fix userdata decryption
-    TW_CRYPTO_USE_SYSTEM_VOLD := \
-    qseecomd \
-    servicemanager \
-    hwservicemanager \
-    keymaster-4-0
+#    TW_CRYPTO_USE_SYSTEM_VOLD := \
+#    qseecomd \
+#    servicemanager \
+#    hwservicemanager \
 
 TW_CRYPTO_SYSTEM_VOLD_MOUNT := system vendor
 TW_CRYPTO_SYSTEM_VOLD_DEBUG := true
