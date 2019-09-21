@@ -122,14 +122,10 @@ TW_EXCLUDE_TWRPAPP := true
 
 #ALLOW_MISSING_DEPENDENCIES := true # If build on minimal-manifest sources
 
+TW_DEVICE_VERSION=$(shell date '+%Y%m%d.%H')
+
 # Hack: prevent anti rollback
 PLATFORM_SECURITY_PATCH := 2099-12-31
-
-# Fix userdata decryption
-#    TW_CRYPTO_USE_SYSTEM_VOLD := \
-#    qseecomd \
-#    servicemanager \
-#    hwservicemanager \
 
 TW_CRYPTO_SYSTEM_VOLD_MOUNT := system vendor
 TW_CRYPTO_SYSTEM_VOLD_DEBUG := true
