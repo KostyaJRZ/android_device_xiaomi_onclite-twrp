@@ -116,6 +116,8 @@ TW_SCREEN_BLANK_ON_BOOT := true
 TWRP_INCLUDE_LOGCAT := true
 TARGET_USES_LOGD := true
 TW_EXCLUDE_TWRPAPP := true
+TW_Y_OFFSET := 57
+TW_H_OFFSET := -57
 
 ALLOW_MISSING_DEPENDENCIES := true # If build on minimal-manifest sources
 
