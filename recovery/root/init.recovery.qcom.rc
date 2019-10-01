@@ -114,10 +114,6 @@ on property:ro.crypto.state=encrypted
 on property:hwservicemanager.ready=true
     start sbinqseecomd
 
-on property:sys.listeners.registered=true
-    start keymaster-4-0
-    start gatekeeper-1-0
-
 on property:ro.crypto.state=unsupported
     stop sbinqseecomd
     stop keymaster-4-0

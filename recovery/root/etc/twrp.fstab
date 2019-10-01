@@ -12,9 +12,9 @@
 /cache            ext4     /dev/block/bootdevice/by-name/cache        flags=backup=1;wipeingui;wipeduringfactoryreset
 /data             ext4     /dev/block/bootdevice/by-name/userdata     flags=encryptable=footer;length=-16384
 /system_root      ext4     /dev/block/bootdevice/by-name/system       flags=display="System";backup=1;wipeingui
-/system_image     emmc     /dev/block/bootdevice/by-name/system       flags=backup=1;flashimg=1
+/system_image     emmc     /dev/block/bootdevice/by-name/system       
 /vendor           ext4     /dev/block/bootdevice/by-name/vendor       flags=display="Vendor";backup=1
-/vendor_image     emmc     /dev/block/bootdevice/by-name/vendor       flags=display="Vendor Image";flashimg=1;backup=1
+/vendor_image     emmc     /dev/block/bootdevice/by-name/vendor       
 /vbmeta           emmc     /dev/block/bootdevice/by-name/vbmeta       flags=display="Vbmeta";flashimg=1;backup=1
 
 # Bootloader
