@@ -122,7 +122,7 @@ TW_H_OFFSET := -57
 
 ALLOW_MISSING_DEPENDENCIES := true # If build on minimal-manifest sources
 
-TW_DEVICE_VERSION=$(shell date '+%Y%m%d.%H')
+TW_DEVICE_VERSION=$(shell date '+%Y%m%d')
 
 # Hack: prevent anti rollback
 PLATFORM_SECURITY_PATCH := 2099-12-31
