@@ -22,9 +22,9 @@ $(call inherit-product, vendor/omni/config/common.mk)
 
 PRODUCT_DEVICE := onclite
 PRODUCT_NAME := omni_onclite
-PRODUCT_BRAND := xiaomi
+PRODUCT_BRAND := Xiaomi
 PRODUCT_MODEL := Xiaomi Redmi 7
-PRODUCT_MANUFACTURER := xiaomi
+PRODUCT_MANUFACTURER := Xiaomi
 
 PRODUCT_SYSTEM_PROPERTY_BLACKLIST += \
     ro.product.device \
@@ -32,8 +32,4 @@ PRODUCT_SYSTEM_PROPERTY_BLACKLIST += \
     ro.build.product
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.hardware.keystore=sdm632 \
-    sys.usb.controller=7000000.dwc3 \
-    sys.usb.rndis.func.name=rndis_bam \
-    sys.usb.rmnet.func.name=rmnet_bam \
     ro.vendor.build.security_patch=2099-12-31
