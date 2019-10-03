@@ -19,3 +19,41 @@ Front Camera  |  8 MP, f/2.0, 1.12µm
 
 ![Xiaomi Redmi 7](https://i.gadgets360cdn.com/products/large/1552901002_635_redmi_7.jpg?downsize=770:*&output-quality=70&output-format=webp "Xiaomi Redmi 7")
 
+## Features
+
+Bugs:
+
+- Decryption of /data 
+- Mount of /vendor
+- Backup/Restore (Needs more testing)
+- USB OTG (Needs more testing)
+
+## Compile
+
+First checkout minimal twrp with omnirom tree:
+
+```
+repo init -u git://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni.git -b twrp-9.0
+repo sync
+```
+
+Then add these projects to .repo/manifest.xml:
+
+```xml
+<project path="device/xiaomi/onclite" name="KostyaJRZ/android_device_xiaomi_onclite-twrp" remote="github" revision="android-9.0" />
+```
+
+Finally execute these:
+
+```
+. build/envsetup.sh
+lunch omni_onclite-eng
+mka recoveryimage ALLOW_MISSING_DEPENDENCIES=true # Only if you use minimal twrp tree.
+```
+
+To test it:
+
+```
+fastboot boot out/target/product/onclite/recovery.img
+```
+
