@@ -47,21 +47,16 @@ void load_properties(const char *model) {
 
 
 void vendor_load_properties() {
-    std::string device_region = android::base::GetProperty("ro.boot.hwccountry", "");
+    std::string device_region = android::base::GetProperty("ro.boot.hwc", "");
     if (device_region == "CN")
     {
         load_properties("onc");
     }
-    else if (device_region == "India")
+    else if (device_region == "INDIA")
     {
         load_properties("onc");
     }
-    else if (device_region == "Global")
-    {
-        load_properties("onclite");
-    }
-    else
-		else if (device_region == "Global_B")
+    else if (device_region == "GLOBAL")
     {
         load_properties("onclite");
     }

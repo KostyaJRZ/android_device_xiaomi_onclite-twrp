@@ -1,6 +1,7 @@
-sys.usb.controller=7000000.dwc3
-sys.usb.rndis.func.name=rndis_bam
-sys.usb.rmnet.func.name=rmnet_bam
+ro.product.brand=xiaomi
+ro.product.name=onclite
+ro.product.device=onclite
+ro.build.product=onclite
 ro.treble.enabled=true
 ro.build.system_root_image=true
 
