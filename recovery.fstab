@@ -14,7 +14,7 @@
 /data             ext4     /dev/block/bootdevice/by-name/userdata     flags=encryptable=footer;length=-16384
 /system_root      ext4     /dev/block/bootdevice/by-name/system       flags=display="System";backup=1;wipeingui
 /system_image     emmc     /dev/block/bootdevice/by-name/system       
-/vendor           ext4     /dev/block/bootdevice/by-name/vendor       flags=display="Vendor";backup=1
+/vendor           ext4     /dev/block/bootdevice/by-name/vendor       flags=display="Vendor";backup=1;wipeingui
 /vendor_image     emmc     /dev/block/bootdevice/by-name/vendor       
 /vbmeta           emmc     /dev/block/bootdevice/by-name/vbmeta       flags=display="Vbmeta";flashimg=1;backup=1
 
@@ -38,7 +38,7 @@
 /efs1             emmc     /dev/block/bootdevice/by-name/modemst1     flags=backup=1;display="EFS"
 /efs2             emmc     /dev/block/bootdevice/by-name/modemst2     flags=backup=1;subpartitionof=/efs1
 /fsg              emmc     /dev/block/bootdevice/by-name/fsg          flags=display="fsg";backup=1;subpartitionof=/efs1
-/efsc		          emmc	   /dev/block/bootdevice/by-name/fsc	        lags=backup=1;subpartitionof=/efs1
+/efsc		  emmc	   /dev/block/bootdevice/by-name/fsc	      flags=backup=1;subpartitionof=/efs1
 
 # Other
 /persist          ext4     /dev/block/bootdevice/by-name/persist      flags=display="Persist";backup=1
