@@ -30,7 +30,7 @@ TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
 TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_ABI2 :=
-TARGET_CPU_VARIANT := generic
+TARGET_CPU_VARIANT := kryo
 
 TARGET_2ND_ARCH := arm
 TARGET_2ND_ARCH_VARIANT := armv8-a
@@ -40,12 +40,12 @@ TARGET_2ND_CPU_VARIANT := cortex-a53
 TARGET_USES_64_BIT_BINDER := true
 
 # Bootloader
-TARGET_BOOTLOADER_BOARD_NAME := sdm632
+TARGET_BOOTLOADER_BOARD_NAME := msm8953
 TARGET_NO_BOOTLOADER := true
 TARGET_USES_UEFI := true
 
 # Platform
-TARGET_BOARD_PLATFORM := sdm632
+TARGET_BOARD_PLATFORM := msm8953
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno506
 
 BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200,n8 androidboot.console=ttyMSM0 androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 androidboot.bootdevice=7824900.sdhci earlycon=msm_serial_dm,0x78af000 firmware_class.path=/vendor/firmware_mnt/image androidboot.usbconfigfs=true loop.max_part=7 androidboot.selinux=permissive buildvariant=eng
@@ -56,9 +56,11 @@ BOARD_KERNEL_TAGS_OFFSET := 0x00000100
 BOARD_RAMDISK_OFFSET     := 0x01000000
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/zImage.gz-dtb
 TARGET_KERNEL_ARCH := arm64
+TARGET_KERNEL_HEADER_ARCH := arm64
 
 # QCOM
-TARGET_USE_SDCLANG := true
+#TARGET_USE_SDCLANG := true
+BOARD_USES_QCOM_HARDWARE := true
 
 # Partitions 
 BOARD_FLASH_BLOCK_SIZE := 131072 # (BOARD_KERNEL_PAGESIZE * 64)
@@ -72,7 +74,6 @@ BOARD_VENDORIMAGE_PARTITION_SIZE := 1015713792
 
 # FS
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
-BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 TW_INCLUDE_NTFS_3G := true
@@ -87,7 +88,13 @@ BOARD_ROOT_EXTRA_FOLDERS := bluetooth dsp firmware persist
 BOARD_SUPPRESS_SECURE_ERASE := true
 
 # Workaround for error copying vendor files to recovery ramdisk
-TARGET_COPY_OUT_VENDOR := vendor
+#BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+#TARGET_COPY_OUT_VENDOR := vendor
+
+#Init
+TARGET_INIT_VENDOR_LIB := libinit_onclite
+TARGET_RECOVERY_DEVICE_MODULES := libinit_onclite
+TARGET_PLATFORM_DEVICE_BASE := /devices/soc/
 
 # Recovery
 BOARD_HAS_LARGE_FILESYSTEM := true
@@ -102,10 +109,9 @@ TARGET_CRYPTFS_HW_PATH := vendor/qcom/opensource/commonsys/cryptfs_hw
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_FBE := true
 
-#Init
-TARGET_INIT_VENDOR_LIB := libinit_onclite
-TARGET_RECOVERY_DEVICE_MODULES := libinit_onclite
-TARGET_PLATFORM_DEVICE_BASE := /devices/soc/
+TW_CRYPTO_SYSTEM_VOLD_MOUNT := system vendor
+TW_CRYPTO_SYSTEM_VOLD_DEBUG := true
+TW_CRYPTO_SYSTEM_VOLD_SERVICES := true
 
 # TWRP specific build flags
 TW_THEME := portrait_hdpi
