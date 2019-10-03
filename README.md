@@ -51,9 +51,9 @@ lunch omni_onclite-eng
 mka recoveryimage ALLOW_MISSING_DEPENDENCIES=true # Only if you use minimal twrp tree.
 ```
 
-To test it:
+Install:
 
 ```
-fastboot boot out/target/product/onclite/recovery.img
+fastboot flash recovery recovery.img
 ```
 
