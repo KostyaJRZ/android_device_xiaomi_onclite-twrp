@@ -1,7 +1,7 @@
 Twrp Device Tree for Xiaomi Redmi 7/Y7 (onclite/onc)
 ===========================================
 
-The Xiaomi Redmi 7 (codenamed _"onclite"_) and Xiaomi Y7 is a mid-range smartphone from Xiaomi.
+The Xiaomi Redmi 7 (codenamed _"onclite"_) and Xiaomi Y7 (codenamed _"onc"_) is a mid-range smartphone from Xiaomi.
 It was announced on March, 2019.
 
 Basic   | Spec Sheet
@@ -20,6 +20,8 @@ Front Camera  |  8 MP, f/2.0, 1.12µm
 ![Xiaomi Redmi 7](https://i.gadgets360cdn.com/products/large/1552901002_635_redmi_7.jpg?downsize=770:*&output-quality=70&output-format=webp "Xiaomi Redmi 7")
 
 ## Features
+
+This TWRP automatically detects the device region and updates the device code name _"onclite"_ or _"onc"_
 
 Bugs:
 
