@@ -1,7 +1,7 @@
-Twrp Device Tree for Xiaomi Redmi 7/Y7 (onclite/onc)
+Twrp Device Tree for Xiaomi Redmi 7/Y3 (onclite/onc)
 ===========================================
 
-The Xiaomi Redmi 7 (codenamed _"onclite"_) and Xiaomi Y7 (codenamed _"onc"_) is a mid-range smartphone from Xiaomi.
+The Xiaomi Redmi 7 (codenamed _"onclite"_) and Xiaomi Y3 (codenamed _"onc"_) is a mid-range smartphone from Xiaomi.
 It was announced on March, 2019.
 
 Basic   | Spec Sheet
