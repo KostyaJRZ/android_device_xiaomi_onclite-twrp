@@ -47,26 +47,26 @@ on init
 
 # Separate copy needed to use /sbin/linker64 instead of /system/bin/linker64
 # service sbinqseecomd /sbin/qseecomd
-service system_qseecomd /system/bin/qseecomd
+service sbinqseecomd /sbin/qseecomd
     user root
     group root
     disabled
     seclabel u:r:recovery:s0
 
-service hwservicemanager /system/bin/hwservicemanager
+service hwservicemanager /sbin/hwservicemanager
     user root
     group root
     disabled
     onrestart setprop hwservicemanager.ready false
     seclabel u:r:recovery:s0
 
-service servicemanager /system/bin/servicemanager
+service servicemanager /sbin/servicemanager
     user root
     group root readproc
     disabled
     seclabel u:r:recovery:s0
 
-service keystore_auth /system/bin/keystore_auth
+service keystore_auth /sbin/keystore_auth
     oneshot
     user system
     group root
@@ -74,19 +74,19 @@ service keystore_auth /system/bin/keystore_auth
     seclabel u:r:recovery:s0
 
 # keystore is started and stopped on demand by TWRP
-service keystore /system/bin/keystore /tmp/misc/keystore
+service keystore /sbin/keystore /tmp/misc/keystore
     user root
     group root drmrpc readproc
     disabled
     seclabel u:r:recovery:s0
 
-service gatekeeper-1-0 /system/bin/android.hardware.gatekeeper@1.0-service-qti
+service gatekeeper-1-0 /sbin/android.hardware.gatekeeper@1.0-service-qti
     user root
     group root
     disabled
     seclabel u:r:recovery:s0
 
-service keymaster-4-0 /system/bin/android.hardware.keymaster@4.0-service-qti
+service keymaster-4-0 /sbin/android.hardware.keymaster@4.0-service-qti
     user root
     group root
     disabled
