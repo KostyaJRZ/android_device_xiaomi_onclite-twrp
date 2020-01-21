@@ -106,7 +106,6 @@ TARGET_HW_DISK_ENCRYPTION := true
 TARGET_CRYPTFS_HW_PATH := vendor/qcom/opensource/commonsys/cryptfs_hw
 
 # Crypto
-TW_CRYPTO_USE_SYSTEM_VOLD := qseecomd hwservicemanager keymaster-4-0
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_FBE := true
 
