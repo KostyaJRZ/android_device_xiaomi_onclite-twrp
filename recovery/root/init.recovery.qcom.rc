@@ -29,6 +29,7 @@ on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
     export ANDROID_ROOT /system_root
+# needed to make qseecomd work in recovery
     chmod 0660 /dev/qseecom
     chown system drmrpc /dev/qseecom
     chmod 0664 /dev/ion
@@ -45,20 +46,34 @@ on init
     start hwservicemanager
     setprop crypto.ready 1
 
-# Separate copy needed to use /sbin/linker64 instead of /system/bin/linker64
-# service sbinqseecomd /sbin/qseecomd
-service system_qseecomd /system/bin/qseecomd
-    user root
-    group root
-    disabled
-    seclabel u:r:recovery:s0
+# Oreo has qseecomd in /vendor/bin so add the additional
+# service. Only an existing binary will be started, never both.
 
-service hwservicemanager /system/bin/hwservicemanager
+service sys_qseecomd /system/bin/qseecomd
     user root
     group root
+    setenv PATH /system/bin
+    setenv LD_LIBRARY_PATH /system/lib64:/system/lib
     disabled
+    oneshot
+
+service ven_qseecomd /vendor/bin/qseecomd
+    user root
+    group root
+    setenv PATH /vendor/bin:/system/bin
+    setenv LD_LIBRARY_PATH /vendor/lib64:/system/lib64:/vendor/lib:/system/lib
+    disabled
+    oneshot
+
+service sys_hwservicemanager /system/bin/hwservicemanager
+    user root
+    group root
+    setenv PATH /system/bin
+    setenv LD_LIBRARY_PATH /system/lib64:/system/lib
     onrestart setprop hwservicemanager.ready false
-    seclabel u:r:recovery:s0
+    disabled
+    oneshot
+    seclabel u:r:vold:s0
 
 service servicemanager /system/bin/servicemanager
     user root
@@ -72,25 +87,53 @@ service keystore_auth /system/bin/keystore_auth
     group root
     disabled
     seclabel u:r:recovery:s0
+	
+service sys_vold /system/bin/vold \
+        --blkid_context=u:r:blkid:s0 --blkid_untrusted_context=u:r:blkid_untrusted:s0 \
+        --fsck_context=u:r:fsck:s0 --fsck_untrusted_context=u:r:fsck_untrusted:s0
+    socket vold stream 0660 root mount
+    socket cryptd stream 0660 root mount
+    setenv PATH /system/bin
+    setenv LD_LIBRARY_PATH /system/lib64:/system/lib
+    disabled
+    oneshot
 
 # keystore is started and stopped on demand by TWRP
-service keystore /system/bin/keystore /tmp/misc/keystore
+service keystore /vendor/bin/hw/keystore /tmp/misc/keystore
     user root
     group root drmrpc readproc
+    setenv PATH /vendor/bin:/system/bin
+    setenv LD_LIBRARY_PATH /vendor/lib64:/system/lib64:/vendor/lib:/system/lib
     disabled
+    oneshot
     seclabel u:r:recovery:s0
 
-service gatekeeper-1-0 /system/bin/android.hardware.gatekeeper@1.0-service-qti
+service sys_gatekeeper-1-0 /system/bin/android.hardware.gatekeeper@1.0-service-qti
     user root
     group root
+    setenv PATH /system/bin
+    setenv LD_LIBRARY_PATH /system/lib64:/system/lib
     disabled
-    seclabel u:r:recovery:s0
+    oneshot
+    seclabel u:r:vold:s0
 
-service keymaster-4-0 /system/bin/android.hardware.keymaster@4.0-service-qti
+service sys_keymaster-4-0 /system/bin/android.hardware.keymaster@4.0-service-qti
     user root
     group root
+    setenv PATH /system/bin
+    setenv LD_LIBRARY_PATH /system/lib64:/system/lib
     disabled
-    seclabel u:r:recovery:s0
+    oneshot
+    seclabel u:r:vold:s0
+	
+service ven_keymaster-3-0 /vendor/bin/hw/android.hardware.keymaster@3.0-service-qti
+    user root
+    group root
+    setenv PATH /vendor/bin:/system/bin
+    setenv LD_LIBRARY_PATH /vendor/lib64:/system/lib64:/vendor/lib:/system/lib
+    disabled
+    oneshot
+    seclabel u:r:vold:s0
 
 on boot
     setprop sys.usb.config adb
