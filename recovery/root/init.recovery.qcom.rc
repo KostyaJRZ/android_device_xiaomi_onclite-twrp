@@ -46,6 +46,13 @@ on init
     start sys_hwservicemanager
     setprop crypto.ready 1
 
+# Separate copy needed to use /sbin/linker64 instead of /system/bin/linker64
+service sbinqseecomd /sbin/qseecomd
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0	
+
 # Oreo has qseecomd in /vendor/bin so add the additional
 # service. Only an existing binary will be started, never both.
 
@@ -62,9 +69,8 @@ service sys_hwservicemanager /system/bin/hwservicemanager
     group root
     setenv PATH /system/bin
     setenv LD_LIBRARY_PATH /system/lib64:/system/lib
+	disabled
     onrestart setprop hwservicemanager.ready false
-    disabled
-    oneshot
     seclabel u:r:vold:s0
 
 service sys_servicemanager /system/bin/servicemanager
@@ -113,26 +119,19 @@ service ven_keymaster-4-0 /vendor/bin/android.hardware.keymaster@4.0-service-qti
     oneshot
     seclabel u:r:vold:s0
 	
-service ven_keymaster-3-0 /vendor/bin/hw/android.hardware.keymaster@3.0-service-qti
-    user root
-    group root
-    setenv PATH /vendor/bin:/system/bin
-    setenv LD_LIBRARY_PATH /vendor/lib64:/system/lib64:/vendor/lib:/system/lib
-    disabled
-    oneshot
-    seclabel u:r:vold:s0
-
 on boot
     setprop sys.usb.config adb
 
 on property:crypto.ready=0
+    stop sbinqseecomd
     stop ven_qseecomd
     stop ven_keymaster-4-0
     stop ven_gatekeeper-1-0
     stop sys_servicemanager
 
 on property:crypto.ready=1
-    start ven_qseecomd
+    start sbinqseecomd
+	start ven_qseecomd
 
 on property:vendor.sys.listeners.registered=true
     start ven_keymaster-4-0
@@ -140,34 +139,40 @@ on property:vendor.sys.listeners.registered=true
     start sys_servicemanager
 
 on property:ro.crypto.state=encrypted
+    start sbinqseecomd
     start ven_qseecomd
 
 on property:hwservicemanager.ready=true
-    start ven_qseecomd
+    start sbinqseecomd
+	start ven_qseecomd
 
 on property:ro.crypto.state=unsupported
-    stop ven_qseecomd
+    start sbinqseecomd
+	stop ven_qseecomd
     stop ven_keymaster-4-0
     stop ven_gatekeeper-1-0
     stop sys_servicemanager
     stop sys_hwservicemanager
 
 on property:ro.crypto.state=unencrypted
-    stop ven_qseecomd
+    start sbinqseecomd
+	stop ven_qseecomd
     stop ven_keymaster-4-0
     stop ven_gatekeeper-1-0
     stop sys_servicemanager
     stop sys_hwservicemanager
 
 on property:twrp.decrypt.done=true
-    stop ven_qseecomd
+    start sbinqseecomd
+	stop ven_qseecomd
     stop ven_keymaster-4-0
     stop ven_gatekeeper-1-0
     stop sys_servicemanager
     stop sys_hwservicemanager
 
 on property:ro.crypto.fs_crypto_blkdev=*
-    stop ven_qseecomd
+    start sbinqseecomd
+	stop ven_qseecomd
     stop ven_keymaster-4-0
     stop ven_gatekeeper-1-0
     stop sys_servicemanager
