@@ -43,140 +43,19 @@ on init
     symlink /sbin/busybox /system/bin/sh
     symlink /vendor/manifest.xml /system/manifest.xml
 
-    start sys_hwservicemanager
+#   start sys_hwservicemanager
     setprop crypto.ready 1
-
-# Separate copy needed to use /sbin/linker64 instead of /system/bin/linker64
-service sbinqseecomd /sbin/qseecomd
-    user root
-    group root
-    disabled
-    seclabel u:r:recovery:s0	
-
-# Oreo has qseecomd in /vendor/bin so add the additional
-# service. Only an existing binary will be started, never both.
-
-service ven_qseecomd /vendor/bin/qseecomd
-    user root
-    group root
-    setenv PATH /vendor/bin:/system/bin
-    setenv LD_LIBRARY_PATH /vendor/lib64:/system/lib64:/vendor/lib:/system/lib
-    disabled
-    oneshot
-
-service sys_hwservicemanager /system/bin/hwservicemanager
-    user root
-    group root
-    setenv PATH /system/bin
-    setenv LD_LIBRARY_PATH /system/lib64:/system/lib
-	disabled
-    onrestart setprop hwservicemanager.ready false
-    seclabel u:r:vold:s0
-
-service sys_servicemanager /system/bin/servicemanager
-    user root
-    group root readproc
-	setenv PATH /system/bin
-    setenv LD_LIBRARY_PATH /system/lib64:/system/lib
-    disabled
-    seclabel u:r:recovery:s0
 	
-service sys_vold /system/bin/vold \
-        --blkid_context=u:r:blkid:s0 --blkid_untrusted_context=u:r:blkid_untrusted:s0 \
-        --fsck_context=u:r:fsck:s0 --fsck_untrusted_context=u:r:fsck_untrusted:s0
-    socket vold stream 0660 root mount
-    socket cryptd stream 0660 root mount
-    setenv PATH /system/bin
-    setenv LD_LIBRARY_PATH /system/lib64:/system/lib
-    disabled
+service sbin_qseecomd /sbin/qseecomd
     oneshot
-
-# keystore is started and stopped on demand by TWRP
-service sys_keystore /system/bin/keystore /tmp/misc/keystore
+    disabled
     user root
-    group root drmrpc readproc
-    setenv PATH /system/bin
-    setenv LD_LIBRARY_PATH /system/lib64:/system/lib
-    disabled
-    oneshot
+    group root
     seclabel u:r:recovery:s0
-
-service ven_gatekeeper-1-0 /vendor/bin/android.hardware.gatekeeper@1.0-service-qti
-    user root
-    group root
-    setenv PATH /vendor/bin:/system/bin
-    setenv LD_LIBRARY_PATH /vendor/lib64:/system/lib64:/vendor/lib:/system/lib
-    disabled
-    oneshot
-    seclabel u:r:vold:s0
-
-service ven_keymaster-4-0 /vendor/bin/android.hardware.keymaster@4.0-service-qti
-    user root
-    group root
-    setenv PATH /vendor/bin:/system/bin
-    setenv LD_LIBRARY_PATH /vendor/lib64:/system/lib64:/vendor/lib:/system/lib
-    disabled
-    oneshot
-    seclabel u:r:vold:s0
-	
-on boot
-    setprop sys.usb.config adb
-
-on property:crypto.ready=0
-    stop sbinqseecomd
-    stop ven_qseecomd
-    stop ven_keymaster-4-0
-    stop ven_gatekeeper-1-0
-    stop sys_servicemanager
-
-on property:crypto.ready=1
-    start sbinqseecomd
-	start ven_qseecomd
-
-on property:vendor.sys.listeners.registered=true
-    start ven_keymaster-4-0
-    start ven_gatekeeper-1-0
-    start sys_servicemanager
 
 on property:ro.crypto.state=encrypted
-    start sbinqseecomd
-    start ven_qseecomd
+    start sbin_qseecomd
 
-on property:hwservicemanager.ready=true
-    start sbinqseecomd
-	start ven_qseecomd
-
-on property:ro.crypto.state=unsupported
-    start sbinqseecomd
-	stop ven_qseecomd
-    stop ven_keymaster-4-0
-    stop ven_gatekeeper-1-0
-    stop sys_servicemanager
-    stop sys_hwservicemanager
-
-on property:ro.crypto.state=unencrypted
-    start sbinqseecomd
-	stop ven_qseecomd
-    stop ven_keymaster-4-0
-    stop ven_gatekeeper-1-0
-    stop sys_servicemanager
-    stop sys_hwservicemanager
-
-on property:twrp.decrypt.done=true
-    start sbinqseecomd
-	stop ven_qseecomd
-    stop ven_keymaster-4-0
-    stop ven_gatekeeper-1-0
-    stop sys_servicemanager
-    stop sys_hwservicemanager
-
-on property:ro.crypto.fs_crypto_blkdev=*
-    start sbinqseecomd
-	stop ven_qseecomd
-    stop ven_keymaster-4-0
-    stop ven_gatekeeper-1-0
-    stop sys_servicemanager
-    stop sys_hwservicemanager
-
-
+on property:ro.crypto.fs_crypto_blkdev=/dev/block/dm-0
+    stop sbin_qseecomd
 
