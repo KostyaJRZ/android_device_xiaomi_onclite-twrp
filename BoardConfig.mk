@@ -48,13 +48,16 @@ TARGET_USES_UEFI := true
 TARGET_BOARD_PLATFORM := msm8953
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno506
 
-BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200,n8 androidboot.console=ttyMSM0 androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 androidboot.bootdevice=7824900.sdhci earlycon=msm_serial_dm,0x78af000 firmware_class.path=/vendor/firmware_mnt/image androidboot.usbconfigfs=true loop.max_part=7 androidboot.selinux=permissive buildvariant=eng
+BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200,n8 androidboot.console=ttyMSM0 androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 androidboot.bootdevice=7824900.sdhci earlycon=msm_serial_dm,0x78af000 firmware_class.path=/vendor/firmware_mnt/image androidboot.usbconfigfs=true loop.max_part=7 androidboot.selinux=permissive
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 BOARD_KERNEL_BASE := 0x80000000
-BOARD_KERNEL_PAGESIZE := 4096
+BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_TAGS_OFFSET := 0x00000100
 BOARD_RAMDISK_OFFSET     := 0x01000000
-TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/zImage.gz-dtb
+BOARD_KERNEL_SEPARATED_DTBO := true
+BOARD_INCLUDE_RECOVERY_DTBO := true
+TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/zImage
+BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
 TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_HEADER_ARCH := arm64
 
@@ -78,9 +81,10 @@ TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 TW_INCLUDE_NTFS_3G := true
 
-# Avb
-#BOARD_AVB_ENABLE := true
-#BOARD_AVB_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
+# AVB
+BOARD_AVB_ENABLE := true
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --set_hashtree_disabled_flag
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 2
 
 # System as root
 BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
@@ -89,7 +93,7 @@ BOARD_SUPPRESS_SECURE_ERASE := true
 
 # Workaround for error copying vendor files to recovery ramdisk
 #BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
-#TARGET_COPY_OUT_VENDOR := vendor
+TARGET_COPY_OUT_VENDOR := vendor
 
 #Init
 TARGET_INIT_VENDOR_LIB := libinit_onclite
@@ -109,6 +113,7 @@ TARGET_CRYPTFS_HW_PATH := vendor/qcom/opensource/commonsys/cryptfs_hw
 TW_CRYPTO_USE_SYSTEM_VOLD := qseecomd hwservicemanager keymaster-4-0
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_FBE := true
+TW_INCLUDE_CRYPTO_FBE := true
 
 TW_CRYPTO_SYSTEM_VOLD_MOUNT := system vendor
 TW_CRYPTO_SYSTEM_VOLD_DEBUG := true
@@ -118,7 +123,7 @@ TW_CRYPTO_SYSTEM_VOLD_SERVICES := true
 TW_THEME := portrait_hdpi
 RECOVERY_SDCARD_ON_DATA := true
 TARGET_RECOVERY_QCOM_RTC_FIX := true
-TARGET_OTA_ASSERT_DEVICE := onc,onclite
+TARGET_OTA_ASSERT_DEVICE := onc, onclite, Onc, Onclite, Redmi 7, Redmi Y3
 TW_BRIGHTNESS_PATH := /sys/class/leds/lcd-backlight/brightness
 TW_EXCLUDE_DEFAULT_USB_INIT := true
 TW_EXTRA_LANGUAGES := true
