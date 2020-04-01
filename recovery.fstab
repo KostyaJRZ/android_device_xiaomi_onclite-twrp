@@ -2,50 +2,29 @@
 # The filesystem that contains the filesystem checker binary (typically /system) cannot
 # specify MF_CHECK, and must come before any filesystems that do specify MF_CHECK
 
-# Currently we dont have e2fsck compiled. So fs check would failed.
+# mount point  fstype device                             device2              flags
+/boot          emmc    /dev/block/bootdevice/by-name/boot
+/cache         ext4    /dev/block/bootdevice/by-name/cache
+/recovery      emmc    /dev/block/bootdevice/by-name/recovery                    flags=backup=1
+/system_root   ext4    /dev/block/bootdevice/by-name/system			 flags=display="System";backup=1;wipeingui
+/vendor        ext4    /dev/block/bootdevice/by-name/vendor                      flags=display="Vendor";backup=1;wipeingui
 
-# <mount_point>  <fstype>  <device>        <device2>                  <flags>
+/system_image  emmc    /dev/block/bootdevice/by-name/system
+/vendor_image  emmc    /dev/block/bootdevice/by-name/vendor
 
-/boot             emmc     /dev/block/bootdevice/by-name/boot         flags=backup=1;flashimg=1
-/recovery         emmc     /dev/block/bootdevice/by-name/recovery     flags=backup=1;flashimg=1
-/splash           emmc     /dev/block/bootdevice/by-name/splash       flags=display="Splash";backup=1;flashimg=1
-/cache            ext4     /dev/block/bootdevice/by-name/cache        flags=backup=1;wipeingui;wipeduringfactoryreset
-/data             ext4     /dev/block/bootdevice/by-name/userdata     flags=encryptable=footer;length=-16384;fileencryption=ice:aes-256-cts:aes-256-heh;wrappedkey
-/system_root      ext4     /dev/block/bootdevice/by-name/system       flags=display="System";backup=0;
-/system_image     emmc     /dev/block/bootdevice/by-name/system       
-/vendor           ext4     /dev/block/bootdevice/by-name/vendor       flags=display="Vendor";backup=0;wipeingui
-/vendor_image     emmc     /dev/block/bootdevice/by-name/vendor          
-/vbmeta           emmc     /dev/block/bootdevice/by-name/vbmeta       flags=display="Vbmeta";flashimg=1;backup=1
+/data          ext4   /dev/block/bootdevice/by-name/userdata                     flags=encryptable=footer;length=-16384;fileencryption=ice:aes-256-cts
+/firmware      vfat   /dev/block/bootdevice/by-name/modem                        flags=display="Firmware";mounttodecrypt
+/cust          ext4   /dev/block/bootdevice/by-name/cust                         flags=display="Cust"
+/misc          emmc   /dev/block/bootdevice/by-name/misc
+/modem         emmc   /dev/block/bootdevice/by-name/modem                        flags=backup=1;display="Modem"
+/dsp           emmc   /dev/block/bootdevice/by-name/dsp                          flags=backup=1;subpartitionof=/modem
+/dtbo           emmc   /dev/block/bootdevice/by-name/dtbo                        flags=backup=1;display=DTBO
+/efs1          emmc   /dev/block/bootdevice/by-name/modemst1                     flags=backup=1;display=EFS
+/efs2          emmc   /dev/block/bootdevice/by-name/modemst2                     flags=backup=1;subpartitionof=/efs1
+/efsc          emmc   /dev/block/bootdevice/by-name/fsc                          flags=backup=1;subpartitionof=/efs1
+/efsg          emmc   /dev/block/bootdevice/by-name/fsg                          flags=backup=1;subpartitionof=/efs1
+/persist       ext4   /dev/block/bootdevice/by-name/persist                      flags=display="Persist"
 
-# Bootloader
-/abootbak         emmc     /dev/block/bootdevice/by-name/abootbak     flags=display="Bootloader_Backup";backup=1
-/aboot            emmc     /dev/block/bootdevice/by-name/aboot        flags=display="Bootloader";backup=1
-/tz               emmc     /dev/block/bootdevice/by-name/tz           flags=display="Tz";backup=1;subpartitionof=/aboot
-/cmnlib64         emmc     /dev/block/bootdevice/by-name/cmnlib64     flags=display="cmnlib64";backup=1;subpartitionof=/aboot
-/cmnlib           emmc     /dev/block/bootdevice/by-name/cmnlib       flags=display="cmnlib";backup=1;subpartitionof=/aboot
-/rpm              emmc     /dev/block/bootdevice/by-name/rpm          flags=display="Rpm";backup=1;subpartitionof=/aboot
-/keymaster        emmc     /dev/block/bootdevice/by-name/keymaster    flags=display="keymaster";backup=1;subpartitionof=/aboot
-/devcfg           emmc     /dev/block/bootdevice/by-name/devcfg       flags=display="devcfg";backup=1;subpartitionof=/aboot
-
-# Modem backup/restore
-/firmware         vfat     /dev/block/bootdevice/by-name/modem        flags=display="Firmware"
-/firmware_image   emmc     /dev/block/bootdevice/by-name/modem        flags=display="Firmware Image";backup=1
-/dsp              ext4     /dev/block/bootdevice/by-name/dsp          flags=display="dsp"
-/dsp_image        emmc     /dev/block/bootdevice/by-name/dsp          flags=display="dsp Image"
-
-# EFS backup/restore
-/efs1             emmc     /dev/block/bootdevice/by-name/modemst1     flags=backup=1;display="EFS"
-/efs2             emmc     /dev/block/bootdevice/by-name/modemst2     flags=backup=1;subpartitionof=/efs1
-/fsg              emmc     /dev/block/bootdevice/by-name/fsg          flags=display="fsg";backup=1;subpartitionof=/efs1
-/efsc		      emmc	   /dev/block/bootdevice/by-name/fsc	      flags=backup=1;subpartitionof=/efs1
-
-# Other
-/persist          ext4     /dev/block/bootdevice/by-name/persist      flags=display="Persist";backup=1
-/persist_image    emmc     /dev/block/bootdevice/by-name/persist      flags=display="Persist"
-/cust             ext4     /dev/block/bootdevice/by-name/cust         flags=display="cust";backup=1
-/cust_image       emmc     /dev/block/bootdevice/by-name/cust         flags=display="cust"
-/misc             emmc     /dev/block/bootdevice/by-name/misc
-
-/external_sd      vfat     /dev/block/mmcblk1p1  /dev/block/mmcblk1   flags=display="external_sd";storage;wipeingui;removable;fsflags="utf8"
-/usb-otg          vfat     /dev/block/sda1  /dev/block/sda            flags=display="usb-otg";storage;wipeingui;removable;fsflags="utf8"
-
+# Removable storage
+/usb_otg       vfat /dev/block/sda1                    /dev/block/sda            flags=fsflags=utf8;display="USB-OTG";storage;wipeingui;removable
+/external_sd   vfat /dev/block/mmcblk1p1               /dev/block/mmcblk1        flags=fsflags=utf8;display="SDcard";storage;wipeingui;removable
