@@ -55,7 +55,7 @@ ifeq ($(FOX_BUILD_FULL_KERNEL_SOURCES),1)
   BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
   TARGET_KERNEL_CONFIG := onc_defconfig
 else
-  TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilt/zImage
+  TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/zImage
 PRODUCT_COPY_FILES += \
     $(TARGET_PREBUILT_KERNEL):kernel
 endif
