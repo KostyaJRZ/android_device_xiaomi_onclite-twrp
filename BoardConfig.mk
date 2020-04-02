@@ -113,3 +113,6 @@ TW_DEVICE_VERSION=$(shell date '+%Y%m%d')
 
 # Hack: prevent anti rollback
 PLATFORM_SECURITY_PATCH := 2099-12-31
+
+# OrangeFOX
+TARGET_DEVICE_ALT="onc"

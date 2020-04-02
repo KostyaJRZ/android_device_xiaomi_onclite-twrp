@@ -17,7 +17,6 @@
 
 FDEVICE="onclite"
 if [ "$1" = "$FDEVICE" -o "$FOX_BUILD_DEVICE" = "$FDEVICE" ]; then
-	export TARGET_DEVICE_ALT="onc"
 	export FOX_DELETE_AROMAFM="1"
 	export PLATFORM_VERSION="10.0.0"
 	export OF_USE_MAGISKBOOT=1
